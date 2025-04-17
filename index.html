@@ -37,16 +37,20 @@
           body: JSON.stringify(data)
         });
 
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
         const json = await res.json();
 
         if (json.result === "Success") {
           document.getElementById("response").innerText = "Form submitted successfully!";
           form.reset();
         } else {
-          document.getElementById("response").innerText = "Server error: " + json.message;
+          document.getElementById("response").innerText = "Server error: " + (json.message || "Unknown error");
         }
       } catch (err) {
-        document.getElementById("response").innerText = "Error submitting form.";
+        document.getElementById("response").innerText = "Error submitting form. Check console for details.";
         console.error("Fetch error:", err);
       }
     });
